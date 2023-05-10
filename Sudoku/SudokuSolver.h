@@ -48,6 +48,7 @@ private:
 	int GetNumOfEmptyCells();
 
 	// check sudoku methods
+	bool IsValid(int num, swe::Position pos);
 	std::tuple<int, int> GetSquareStartPos(swe::Position pos);
 	bool IsValidRowAndCol(int num, swe::Position pos);
 	bool IsValidSquares(int num, swe::Position pos);
@@ -56,7 +57,7 @@ private:
 public:
 
 	// check sudoku methods
-	bool IsValid(int num, swe::Position pos);
+	bool CheckSolvedSudoku();
 
 	// prepre for solving
 	bool Solve(fs::path const& path, bool showProgressBar = false);

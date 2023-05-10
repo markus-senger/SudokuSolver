@@ -199,13 +199,17 @@ int SudokuSolver::GetNumOfEmptyCells() {
 
 
 // check sudoku methods
+bool SudokuSolver::IsValid(int num, swe::Position pos) {
+	return IsValidRowAndCol(num, pos) && IsValidSquares(num, pos);
+}
+
 std::tuple<int, int> SudokuSolver::GetSquareStartPos(swe::Position pos) {
 	return std::make_tuple(pos.row - (pos.row % static_cast<int>(sqrt(size))), pos.col - (pos.col % static_cast<int>(sqrt(size))));
 }
 
 bool SudokuSolver::IsValidRowAndCol(int num, swe::Position pos) {
 	for (int i = 0; i < size; i++) {
-		if (board[ConvertTo1D(i, pos.col)] == num || board[ConvertTo1D(pos.row, i)] == num)
+		if ((i != pos.row && board[ConvertTo1D(i, pos.col)] == num) || (i != pos.col && board[ConvertTo1D(pos.row, i)] == num))
 			return false;
 	}
 	return true;
@@ -216,7 +220,7 @@ bool SudokuSolver::IsValidSquares(int num, swe::Position pos) {
 
 	for (int row = squareStartRowPos; row < squareStartRowPos + static_cast<int>(sqrt(size)); row++) {
 		for (int col = squareStartColPos; col < squareStartColPos + static_cast<int>(sqrt(size)); col++) {
-			if (board[ConvertTo1D(row, col)] == num)
+			if (row != pos.row && col != pos.col && board[ConvertTo1D(row, col)] == num)
 				return false;
 		}
 	}
@@ -227,8 +231,14 @@ bool SudokuSolver::IsValidSquares(int num, swe::Position pos) {
 // --- public -------------------------------------------------------------
 
 // check sudoku methods
-bool SudokuSolver::IsValid(int num, swe::Position pos) {
-	return IsValidRowAndCol(num, pos) && IsValidSquares(num, pos);
+bool SudokuSolver::CheckSolvedSudoku() {
+	for (int row = 0; row < size; row++) {
+		for (int col = 0; col < size; col++) {
+			if (!IsValid(board[ConvertTo1D(row, col)], swe::Position(row, col)))
+				return false;
+		}
+	}
+	return true;
 }
 
 
