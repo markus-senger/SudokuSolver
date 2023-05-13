@@ -23,6 +23,7 @@ private:
 	std::vector<std::tuple<int, int, int>> emptyCells;
 	std::vector<unsigned int> rows, cols, boxes;
 	int initNumOfEmptyCells;
+	bool fin;
 
 	// helper methods
 	void Init();

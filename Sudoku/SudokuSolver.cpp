@@ -185,7 +185,7 @@ void SudokuSolver::ShowProgressBar()
 		}
 		std::cout << "] [" << initNumOfEmptyCells - numOfEmptyCells << " / " << initNumOfEmptyCells << "] -> " << int(percentage * 100.0) << " %    \r";
 		std::cout.flush();
-	} while (GetNumOfEmptyCells() != 0);
+	} while (GetNumOfEmptyCells() != 0 && !fin);
 }
 
 int SudokuSolver::GetNumOfEmptyCells() {
@@ -246,6 +246,7 @@ bool SudokuSolver::CheckSolvedSudoku() {
 bool SudokuSolver::Solve(fs::path const& path, bool showProgressBar) {
 	if (ReadFromFile(path)) {
 
+		fin = false;
 		std::thread progressBarThread;
 		if(showProgressBar)
 			progressBarThread = std::thread([this] { ShowProgressBar(); });
@@ -255,6 +256,8 @@ bool SudokuSolver::Solve(fs::path const& path, bool showProgressBar) {
 		auto duration = swe::timed_run([this] {
 			result = SolveRecursive(0);
 		});
+
+		fin = true;
 
 		if (showProgressBar)
 			progressBarThread.join();
