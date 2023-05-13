@@ -31,7 +31,7 @@ void TestAllSudokus(fs::path const& path) {
 			SudokuSolver solver = SudokuSolver();
 			std::cout << "--- " << entry << " -----------------------------\n";
 			std::cout << (solver.Solve(entry, false) ? "\nSolved = True" : "\nSolved = False") << "\n\n";
-			solver.SaveInFile("./Results/Result" + entry.path().filename().string() + ".txt");
+			solver.SaveInFile("./Results/Result_" + entry.path().filename().string());
 		
 			if (!solver.CheckSolvedSudoku())
 				std::cout << "ERROR: Sudoku not correct!\n\n";
